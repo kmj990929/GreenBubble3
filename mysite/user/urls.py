@@ -11,4 +11,8 @@ urlpatterns = [
     path('verify', views.verify, name='user_verify'),
     path('result', views.result, name='user_result'),
     path('logout', views.logout, name='user_logout'),
+    path('forgetpw', views.forgetpw, name='user_forgetpw'),
+    path('forgetpw/findpw', views.findpw, name='user_findpw'),
+    path('findpwFail', views.findpwFail, name='user_findpwFail'),
+    path('forgetpw/viewpw', views.viewpw, name='user_viewpw'),
 ]

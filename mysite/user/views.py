@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .models import *
 
 def index(request):
@@ -58,3 +59,25 @@ def logout(request):
 
 def loginFail(request):
     return render(request, 'user/loginFail.html')
+
+def forgetpw(request):
+    return render(request, 'user/forgetpw.html')
+
+def findpw(request):
+    inputEmail = request.POST['inputEmail']
+    try:
+        user = User.objects.get(user_email = inputEmail)
+    except:
+        return redirect('user_findpwFail')
+    request.session['user_name'] = user.user_name
+    request.session['user_email'] = user.user_email
+    return redirect('user_viewpw')
+
+def findpwFail(request):
+    return render(request, 'user/findpwFail.html')
+
+def viewpw(request):
+    name = request.session['user_name']
+    user = User.objects.get(user_name = name)
+    content = {'password' : user.user_password}
+    return render(request, 'user/viewpw.html', content)
