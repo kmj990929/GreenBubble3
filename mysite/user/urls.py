@@ -9,7 +9,6 @@ urlpatterns = [
     path('signin/login', views.login, name='user_login'),
     path('loginFail', views.loginFail, name='user_loginFail'),
     path('verify', views.verify, name='user_verify'),
-    path('result', views.result, name='user_result'),
     path('logout', views.logout, name='user_logout'),
     path('forgetpw', views.forgetpw, name='user_forgetpw'),
     path('forgetpw/findpw', views.findpw, name='user_findpw'),

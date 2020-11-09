@@ -46,12 +46,6 @@ def login(request):
     else:
         return redirect('user_loginFail')
 
-def result(request):
-    if 'user_name' in request.session.keys():
-        return render(request, 'user/result.html')
-    else:
-        return redirect('user_signin')
-
 def logout(request):
     del request.session['user_name']
     del request.session['user_email']
