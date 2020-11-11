@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Styled from 'styled-components/native';
+import {Alert} from 'react-native';
 import OkButton from  '~/Components/Button/OkButton';
 import SettingButton from '~/Components/Button/SettingButton';
 
@@ -38,16 +39,18 @@ const Label = Styled.Text`
     margin-top: 40px;
 `;
 
-const SmallLabel = Styled.Text`
-    font-size: 16px;
-    fontWeight: bold;
-`;
-
 const Footer = Styled.View`
     width: 100%;
     margin-top: 270px;
     align-items: center;
 `;
+
+const ModalText = Styled.Text`
+  font-size: 16pt;
+  font-weight: bold;
+   margin-top: 20px;
+`;
+
 
 type NavigationProp = StackNavigationProp<SettingParamList, 'Setting'>;
 interface Props {
@@ -56,6 +59,25 @@ interface Props {
 
 
 const Setting = ({navigation}:Props) => {
+  const WithdrawAlert = () =>{
+    Alert.alert(
+      "alert title",
+      "my alert msg",
+      [
+          {
+            text: "YES",
+            onPress: () => console.log("yes"),
+          },
+          {
+            text: "NO",
+            onPress: () => console.log("NO");
+            style: "cancel"
+          }
+      ],
+      {cancelable: false}
+    );
+
+  }
   return (
      
     <Container>
@@ -65,7 +87,9 @@ const Setting = ({navigation}:Props) => {
               <InnerContainer>
                   <SettingButton  label="개발자 정보" onPress={() => { navigation.navigate('DevInfo');}}/>
                   <SettingButton label="로그아웃" onPress={() => { navigation.navigate('Login');}}/>
-                  <Footer><OkButton label="탈퇴하기.." onPress={() => { navigation.navigate('Login');}}/></Footer>
+                  <Footer><OkButton label="탈퇴하기.." onPress={() => {WithdrawAlert}}/></Footer>
+
+
             </InnerContainer>
       
       </OuterContainer>

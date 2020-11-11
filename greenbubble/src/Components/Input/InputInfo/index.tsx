@@ -25,6 +25,7 @@ interface Props {
     style?: Object; 
     clearMode?: boolean; //사용자가 입력할 때, 전체 삭제 버튼을 표시할지
     onChangeText?: (text: string) => void; //입력창 내용이 변경될 때, 호출되는 콜백함수
+    value: string;
  }
 
  const InputInfo = ({
@@ -34,6 +35,7 @@ interface Props {
      style,
      clearMode,
      onChangeText,
+     value,
  }: Props) => {
      
      return (
@@ -49,6 +51,7 @@ interface Props {
                 placeholder={placeholder}
                 clearButtonMode={clearMode ? 'while-editing' : 'never'}
                 onChangeText={onChangeText}
+                value={value}
                 />
          </Container>
      );

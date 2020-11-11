@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState} from 'react';
 import Styled from 'styled-components/native';
 import InputInfo from '~/Components/Input/InputInfo';
 import OkButton from  '~/Components/Button/OkButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {TouchableWithoutFeedback} from 'react-native';
 import {Keyboard} from 'react-native';
+import axios from 'axios';
 
 const Container = Styled.View`
   flex: 1;
@@ -50,6 +51,31 @@ const Footer = Styled.View`
 `;
 
 const FindPassword = () => {
+  const [inputPW, setInputPW] = useState<string>("");
+
+  const getDataUsingSimpleGetCall = () => {
+    axios   
+      .post('http://10.0.2.2:8000/forgetpw', 
+      {
+        password: inputPW,
+      })
+      .then(function (response) {
+        //JSON.stringify(response.data);
+        console.log(JSON.stringify(response.data));
+        console.log("success");
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error.message);
+        //console.log(error.response.request._response);
+      })
+      .finally(function () {
+        // always executed
+        console.log('Finally called');
+      });
+  };
+
+
   return (
      
     <Container>
@@ -59,8 +85,9 @@ const FindPassword = () => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <InnerContainer>
                 <SmallLabel>{"Email"}</SmallLabel> 
-                <InputInfo placeholder={"사용자의 이메일을 입력하세요."} />
-                <Footer><OkButton label="Complete!"/></Footer>
+                <InputInfo placeholder={"사용자의 이메일을 입력하세요."} 
+                            onChangeText={(inputPW) => setInputPW(inputPW)}/>
+                <Footer><OkButton label="Complete!" onPress={() => {getDataUsingSimpleGetCall()}}/></Footer>
             </InnerContainer>
             </TouchableWithoutFeedback>
             </KeyboardAwareScrollView>

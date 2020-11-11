@@ -21,6 +21,8 @@ import DevInfo from './DevInfo';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+
 const LoginStackNavi = () => {
     return (
       <Stack.Navigator
@@ -191,13 +193,14 @@ const LoginStackNavi = () => {
     );
   };
 
+
   const BigStackNavi = () => {
     return(
       <Stack.Navigator>
   
         <Stack.Screen
             name="FriendsList"
-            component={TabNavi}
+            component={FriendsList}
             options={{
               headerShown: false,
             }}
@@ -223,14 +226,15 @@ const LoginStackNavi = () => {
     )
   }
 
+  //디폴트 다시짜기
+
 
 
   export default () => {
     const {userInfo} = useContext<IMyContext>(MyContext);
-  
     return (
       <NavigationContainer>
-        {userInfo ? <TabNavi/> : <LoginStackNavi/>}
+        {userInfo ? <LoginStackNavi/> : <LoginStackNavi/>}
       </NavigationContainer>
     );
   };

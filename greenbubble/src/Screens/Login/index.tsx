@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Styled from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage';
 //import { fetch } from 'react-native';
@@ -63,54 +63,40 @@ interface Props {
 
   const Login = ({navigation}: Props) => {
   const {login} = useContext<IMyContext>(MyContext);
-  const [email, setEmail]= useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [emailV, setEmail]= useState<string>("");
+  const [passwordV, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
-  const getDataUsingSimpleGetCall = (email: string, password: string) => {
-    axios   
+  const getDataUsingSimpleGetCall = () => {    
     //10.0.2.2
     //127.0.0.1
-      //.get('https://jsonplaceholder.typicode.com/posts/1')
-      //.get('users.url')
-      .get('http://10.0.2.2:8000/users.url/signin/login')
-      .then(function (response) {
-        //JSON.stringify(response.data);
-        console.log(JSON.stringify(response.data));
+    axios.post('http://10.0.2.2:8000/signin', 
+      {
+        user_email: emailV,
+        user_password: passwordV,
       })
+      .then(({ data }) => {
+        setIsLogin(data.loginSuccess);
+        console.log("success");
+        console.log(data.loginSuccess);
+        //console.log(JSON.stringify(response.data));
+      })
+      //.then(function (response) {
+     // })
       .catch(function (error) {
         // handle error
         console.log(error.message);
-        console.log(error.status);
+        //console.log(error.response.request._response);
       })
       .finally(function () {
         // always executed
         console.log('Finally called');
       });
   };
-/*
-  fetch( , {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify({})
-  })
-  .then((response) => {
-    if(response.ok){ //성공하면
-      localStorage.setItem('access-token', response.access_token); //로컬에 토큰저장
 
-    }else{
-
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-*/
-
-
+  useEffect(() => {
+    
+  }, [isLogin]);
 
   return (
     <Container>
@@ -123,7 +109,7 @@ interface Props {
           <InputContainer>
             <ImageContainer>
             <Image style={{width:20, height:20}} source={require('~/Assets/Images/user.png')}/></ImageContainer> 
-            <InputLogin placeholder={"Email"} onChangeText={(email) => setEmail(email)} value={email}  />
+            <InputLogin placeholder={"Email"} onChangeText={(emailV) => setEmail(emailV)} value={emailV}  />
         
           </InputContainer>
 
@@ -131,14 +117,14 @@ interface Props {
           <ImageContainer>
             <Image style={{width:20, height:20}} source={require('~/Assets/Images/lock.png')}/></ImageContainer>
             <InputLogin placeholder={"Password"} secureTextEntry={true} 
-                        onChangeText={(password) => setPassword(password)} value={password}  />
+                        onChangeText={(passwordV) => setPassword(passwordV)} value={passwordV}  />
           </InputContainer>
 
           <Button label="Forgot Password?" onPress={() => navigation.navigate('FindPassword')} />
           <Footer> 
           <OkButton label="Login" 
-                onPress={() => {getDataUsingSimpleGetCall(email, password)}}/>
-            <OkButton label="Login" onPress={() => {console.log(email);}}/>
+                    onPress={() => {getDataUsingSimpleGetCall()}}/>
+            <OkButton label="Login" onPress={() => {console.log(emailV);}}/>
             <Button label="Sign Up" onPress={() => navigation.navigate('SignUp')}/>
           </Footer>  
         </KeyboardAwareScrollView> 
@@ -150,3 +136,38 @@ interface Props {
 //<OkButton label="Login" onPress={() => {login(email, password); }}/>
 
 export default Login;
+
+/*
+  const getDataUsingSimpleGetCall = () => {
+    axios   
+    //10.0.2.2
+    //127.0.0.1
+      .post('http://10.0.2.2:8000/signin', 
+      {
+        user_email: emailV,
+        user_password: passwordV,
+      })
+      .then(function (response) {
+        //JSON.stringify(response.data);
+        console.log(JSON.stringify(response.data));
+        console.log("success");
+
+        if(loginSuccess){
+          //friendsList로
+        }else{
+          console.log("login error");
+          //로그인 에러 
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error.message);
+        //console.log(error.response.request._response);
+      })
+      .finally(function () {
+        // always executed
+        console.log('Finally called');
+      });
+  };
+
+*/

@@ -2,9 +2,16 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
+from rest_framework.generics import ListAPIView
+from django.http import JsonResponse
+from .serializers import UserSerializer
+
 def index(request):
     if 'user_name' in request.session.keys():
-        return render(request, 'user/index.html')
+        response = {'loginSuccess':True}
+        response['username'] = request.session['user_name']
+        response['useremail'] = request.session['user_email']
+        return JsonResponse(response, safe=False, status = 200)
     else:
         return redirect('user_signin')
 
@@ -75,3 +82,7 @@ def viewpw(request):
     user = User.objects.get(user_name = name)
     content = {'password' : user.user_password}
     return render(request, 'user/viewpw.html', content)
+
+class Test_user(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

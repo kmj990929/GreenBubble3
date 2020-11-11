@@ -24,6 +24,8 @@ SECRET_KEY = '-0zvyyi*w!92+4l85ga#gg9y!n5nc3dmroz*&hb1(@y50$&*n!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = ['*']
+
 
 ASGI_APPLICATION = 'mysite.routing.application'
 CHANNEL_LAYERS = {
@@ -55,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
