@@ -5,6 +5,7 @@ from .models import *
 from rest_framework.generics import ListAPIView
 from django.http import JsonResponse
 from .serializers import UserSerializer
+from django.views.generic import TemplateView
 
 def index(request):
     if 'user_name' in request.session.keys():
@@ -36,22 +37,27 @@ def verify(request):
     request.session['user_email'] = user.user_email
     return response
 
-def signin(request):
-    return render(request, 'user/signin.html')
+class Test_signin(TemplateView):
+    template_name = "user/signin.html"
 
-def login(request):
-    loginEmail = request.POST['loginEmail']
-    loginPW = request.POST['loginPW']
-    try:
-        user = User.objects.get(user_email = loginEmail)
-    except:
-        return redirect('user_loginFail')
-    if user.user_password == loginPW:
-        request.session['user_name'] = user.user_name
-        request.session['user_email'] = user.user_email
-        return redirect('user_index')
-    else:
-        return redirect('user_loginFail')
+    def post(self, request):
+        loginEmail = request.POST['loginEmail']
+        loginPW = request.POST['loginPW']
+        try:
+            user = User.objects.get(user_email = loginEmail)
+        except:
+            return redirect('user_loginFail')
+        if user.user_password == loginPW:
+            request.session['user_name'] = user.user_name
+            request.session['user_email'] = user.user_email
+
+            response = {'loginSuccess':True}
+            response['username'] = request.session['user_name']
+            response['useremail'] = request.session['user_email']
+            return JsonResponse(response, safe=False, status = 200)
+        else:
+            return redirect('user_loginFail')
+
 
 def logout(request):
     del request.session['user_name']
