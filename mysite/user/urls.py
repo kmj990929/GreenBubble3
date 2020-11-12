@@ -16,4 +16,3 @@ urlpatterns = [
     path('forgetpw/viewpw', views.viewpw, name='user_viewpw'),
 
     path('usersignup', views.Test_user.as_view(), name = 'test_user_view'),
-]
